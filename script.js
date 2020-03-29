@@ -22,36 +22,44 @@ function initMap() {
         });
     }         
 }
-
+let markerList = [];
 function findGongCha() {
-    let request = {
-        location: pos,
-        radius: '10000',
-        query: 'Gong Cha'
-    }
-
-    let gongChaFind = new google.maps.places.PlacesService(map);
-
-    gongChaFind.textSearch(request, (results,status) => {
-        if (status == google.maps.places.PlacesServiceStatus.OK) {
-            for (let i = 0; i < results.length; i++) {
-                createGCMarker(results[i]);
-            }
+    if (document.getElementById("gongChaList").checked == true) {
+        let request = {
+            location: pos,
+            radius: '10000',
+            query: 'Gong Cha'
         }
-    });
 
-    function createGCMarker(place) {
-        var marker = new google.maps.Marker({
-            map: map,
-            position: place.geometry.location,
-            icon: "markers/gongcha.png"
+        let gongChaFind = new google.maps.places.PlacesService(map);
+
+        gongChaFind.textSearch(request, (results, status) => {
+            if (status == google.maps.places.PlacesServiceStatus.OK) {
+                for (let i = 0; i < results.length; i++) {
+                    createGCMarker(results[i]);
+                }
+            }
         });
 
-        google.maps.event.addListener(marker, 'click', function () {
-            infowindow.setContent(place.name);
-            infowindow.open(map, this);
-        });
+        function createGCMarker(place) {
+            let gcmarker = new google.maps.Marker({
+                map: map,
+                position: place.geometry.location,
+                icon: "markers/gongcha.png"
+            });
+            markerList.push(gcmarker);
+            google.maps.event.addListener(gcmarker, 'click', function () {
+                infowindow.setContent(place.name);
+                infowindow.open(map, this);
+            });
+        }
+    } else {
+        for(let i = 0; i < markerList.length; i++) {
+            markerList[i].setMap(null);
+        }
+        markerList = [];
     }
+    
 }
 
 
