@@ -1,19 +1,19 @@
-<!DOCTYPE html>
+
 <html>
-    <head>
-        <link rel="stylesheet" type="text/css" href="style.css">
-    </head>
-    <body class = "overall">
-        <div class = "column left">
-
-        </div>
-        <div class = "column right">
-            <div id = "map">
-
+  <head>
+    <title>BBT Map</title>
+    <link rel="stylesheet" type="text/css" href="style.css">
+  </head>
+  <body>
+        <div class = "overall">
+            <div class = "column left">
+                <button onclick ="findGongCha()">Test button</button>
             </div>
-
+            <div class = "column right">
+                    <div id="map"></div>
+            </div>
         </div>
+        <script src = "script.js"></script>
+        <script async defer type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDDzZn_pnvxSLle7VhEKg9cPCje3_PGYW4&libraries=places&callback=initMap"></script>
     </body>
-    <script src="script.js"></script>
-    <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDDzZn_pnvxSLle7VhEKg9cPCje3_PGYW4&callback=initMap" type="text/javascript"></script>
 </html>

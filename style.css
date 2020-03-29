@@ -4,27 +4,32 @@
     padding: 0;
 }
 
-.body{
-    height:100%;
+#map {
+    height: 100%;
 }
+/* Optional: Makes the sample page fill the window. */
+html, body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+}
+      
 .column {
   float: left;
-}
+} 
 
 .left {
   width: 25%;
+  height: 100%;
 }
 
 .right {
   width: 75%;
+  height: 100%;
 }
 
 .overall:after {
   content: "";
   display: table;
   clear: both;
-}
-
-#map {
-    height:100%;
 }
