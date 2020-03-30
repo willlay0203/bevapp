@@ -1,36 +1,28 @@
 //Map
 //Creating the map onto page
 let map,infowindow,pos;
+let melbourne = { lat: -37.8136, lng: 144.9631 }
 function initMap() {
     //Creates the map
     map = new google.maps.Map(document.getElementById('map'), {
-        center: { lat: -37.8136, lng: 144.9631},
-        zoom: 10
-    });
-    //Asks for user location 
-    if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(function (position) {
-            pos = {
-                lat: position.coords.latitude,
-                lng: position.coords.longitude
-            };
-
-            map.setCenter(pos);
-            map.setZoom(12);
-        }, function () {
-            handleLocationError(true, infoWindow, map.getCenter());
-        });
-    }         
+        center: melbourne,
+        zoom: 12
+    }); 
 }
-let markerList = [];
+
+let iconPic = {
+    gongcha: "markers/gongcha.png",
+    chatime: "markers/chatime.png"
+}
+
+let gcmarkerList = [];
 function findGongCha() {
-    if (document.getElementById("gongChaList").checked == true) {
+    if (document.getElementById("gongchaswitch").checked == true) {
         let request = {
-            location: pos,
+            location: melbourne,
             radius: '10000',
             query: 'Gong Cha'
         }
-
         let gongChaFind = new google.maps.places.PlacesService(map);
 
         gongChaFind.textSearch(request, (results, status) => {
@@ -45,21 +37,58 @@ function findGongCha() {
             let gcmarker = new google.maps.Marker({
                 map: map,
                 position: place.geometry.location,
-                icon: "markers/gongcha.png"
+                icon: iconPic.gongcha
             });
-            markerList.push(gcmarker);
+            gcmarkerList.push(gcmarker);
             google.maps.event.addListener(gcmarker, 'click', function () {
                 infowindow.setContent(place.name);
                 infowindow.open(map, this);
             });
         }
     } else {
-        for(let i = 0; i < markerList.length; i++) {
-            markerList[i].setMap(null);
+        for(let i = 0; i < gcmarkerList.length; i++) {
+            gcmarkerList[i].setMap(null);
         }
-        markerList = [];
+        gcmarkerList = [];
     }
     
 }
 
+let ctmarkerList = [];
+function findChaTime() {
+    if (document.getElementById("chatimeswitch").checked == true) {
+        let request = {
+            location: melbourne,
+            radius: '10000',
+            query: 'Chatime'
+        }
+        let chaTimeFind = new google.maps.places.PlacesService(map);
 
+        chaTimeFind.textSearch(request, (results, status) => {
+            if (status == google.maps.places.PlacesServiceStatus.OK) {
+                for (let i = 0; i < results.length; i++) {
+                    createCTMarker(results[i]);
+                }
+            }
+        });
+
+        function createCTMarker(place) {
+            let ctmarker = new google.maps.Marker({
+                map: map,
+                position: place.geometry.location,
+                icon: iconPic.chatime
+            });
+            ctmarkerList.push(ctmarker);
+            google.maps.event.addListener(ctmarker, 'click', function () {
+                infowindow.setContent(place.name);
+                infowindow.open(map, this);
+            });
+        }
+    } else {
+        for (let i = 0; i < ctmarkerList.length; i++) {
+            ctmarkerList[i].setMap(null);
+        }
+        ctmarkerList = [];
+    }
+
+}
